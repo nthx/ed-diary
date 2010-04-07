@@ -13,6 +13,7 @@ class Controller(object):
         self.view = None #view setup later
 
         self.current_entry = self.root.diary.last_entry()
+        self.any_entry_modified = False
 
 
     def store_current_entry(self, entry):
@@ -20,7 +21,16 @@ class Controller(object):
 
 
     def app_quit(self, widget, data=None):
+        self.save_if_needed()
         gtk.main_quit()
+
+
+    def text_changed(self, signal_name, text_buffer):
+        current_entry = self.current_entry
+        text = text_buffer.get_property('text')
+        updated = current_entry.update(text)
+        if updated:
+            self.any_entry_modified = True
 
 
     def entry_clicked(self, treeview, path, view_column):
@@ -30,6 +40,7 @@ class Controller(object):
 
 
     def load_prev_entry(self):
+        self.save_if_needed()
         if not self.current_entry in self.root.current_entries:
             return
 
@@ -40,7 +51,7 @@ class Controller(object):
 
 
     def load_next_entry(self):
-        log.debug('load_next_entry')
+        self.save_if_needed()
         def valid_index(index):
             return index < len(self.root.current_entries) - 1
 
@@ -57,3 +68,11 @@ class Controller(object):
         if valid_index(index):
             self.store_current_entry(self.root.current_entries[index+1])
             self.view.window_main.show_entry()
+
+
+    def save_if_needed(self):
+        if self.any_entry_modified:
+            self.any_entry_modified = False
+            self.root.diary.save_me()
+
+

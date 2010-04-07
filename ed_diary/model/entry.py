@@ -5,8 +5,8 @@ import datetime
 import os
 
 
-#DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
-DATE_FORMAT = '%Y, %h %d'
+FILE_DATE_FORMAT = '%Y-%m-%d'
+UI_DATE_FORMAT = '%Y, %h %d'
 
 
 
@@ -24,29 +24,39 @@ class Entry(object):
         self.when = when
 
 
-    def when_for_ui_for_str(self):
+    def when_for_ui_for_str(self, for_file=False):
         return str(self.when)
 
 
-    def when_for_ui_for_datetime(self):
-        return self.when.strftime(DATE_FORMAT)
+    def when_for_ui_for_datetime(self, for_file=False):
+        if for_file:
+            return self.when.strftime(FILE_DATE_FORMAT)
+        else:
+            return self.when.strftime(UI_DATE_FORMAT)
 
 
-    def when_for_ui(self):
+    def when_for_ui(self, for_file=False):
         if not self.when:
             self.when = ''
 
         #Tricky Python polymorphism
         fn = self.POLYMORPHIC_WHEN_FOR_UI[type(self.when)]
-        return fn(self)()
+        return fn(self)(for_file=for_file)
 
     
+    def update(self, text):
+        if text and text.strip(' \n') != self.text.strip(' \n'):
+            #log.debug('update: %s' % text)
+            self.text = text
+            return True
+
+
     def is_not_empty(self):
         return self.text and len(self.text.strip()) >= 0
 
 
     def to_file(self):
-        return '%s\n%s\n' % (self.when_for_ui(), self.text)
+        return '%s\n%s\n' % (self.when_for_ui(for_file=True), self.text)
 
 
     def __str__(self):

@@ -37,8 +37,12 @@ class WindowMain(object):
         self.ui_entry_date.set_alignment(0, 0)
 
         self.ui_entry_text = gtk.TextView()
-        self.ui_entry_text.get_buffer().set_text(self.controller.current_entry.text)
         self.ui_entry_text.set_property('wrap-mode', gtk.WRAP_WORD_CHAR)
+
+        self.ui_entry_text.get_buffer().connect('changed', lambda text_buffer: self.controller.text_changed('changed', text_buffer))
+        #self.ui_entry_text.get_buffer().connect('modified-changed', lambda text_buffer: self.controller.text_changed('modified-changed', text_buffer))
+
+        #not working :(
         #self.ui_entry_text = hildon.TextView()
         #self.ui_entry_text.set_placeholder(self.controller.current_entry.text)
 
@@ -82,16 +86,14 @@ class WindowMain(object):
 
     def _update_labels(self, entry):
         self.ui_entry_date.set_label(entry.when_for_ui())
-        #self.ui_entry_text.set_placeholder(entry.text)
-        self.ui_entry_text.get_buffer().set_text(entry.text)
+        buffer = self.ui_entry_text.get_buffer()
+        buffer.set_text(entry.text)
+
         self.window.set_title(entry.when_for_ui())
 
 
     def show_entry(self):
-        entry = self.controller.current_entry
-        log.debug(entry)
-
-        self._update_labels(entry)
+        self._update_labels(self.controller.current_entry)
 
 
     def reload(self):

@@ -4,12 +4,13 @@ log = logging.getLogger(__name__)
 from ed_diary.model.entry import Entry
 import datetime
 import os
+import shutil
 
 
 HOME=os.environ.get('HOME') or '/home/user/'
 CONFIG_DIR=os.path.join(HOME, '.eddiary')
 DIARY_FILE=os.path.join(CONFIG_DIR, 'diary.txt')
-DIARY_FILE2=os.path.join(CONFIG_DIR, 'diary-save.txt')
+DIARY_FILE_TMP=os.path.join(CONFIG_DIR, 'diary-save.txt')
 
 WELCOME="""
 Hello to "Every Day Diary". An utility for you to store a not each day.
@@ -41,6 +42,7 @@ class Diary(object):
         for entry in self.parse_file(file):
             self.entries.append(entry)
         file.close()
+        log.debug('%s entries imported' % len(self.entries))
 
         if not self.entries:
             self.entries.append(Entry(WELCOME))
@@ -49,13 +51,15 @@ class Diary(object):
 
 
     def save_me(self):
-        file = self.get_file_from_disk(name=DIARY_FILE2, mode='w')
+        log.debug('saving..')
+        file, _ = self.get_file_from_disk(filename=DIARY_FILE_TMP, mode='w')
 
         for entry in self.entries:
             file.write(entry.to_file())
-            file.write('n\n')
+            file.write('\n\n')
         file.close()
-
+        shutil.move(DIARY_FILE_TMP, DIARY_FILE)
+        log.debug('saved..')
         
         
 
@@ -76,7 +80,7 @@ class Diary(object):
     def parse_file(self, file):
         def parse_date(line):
             line = line.strip(': ;-')
-            for format in ['%Y.%m.%d', '%Y:%m:%d', '%Y:%m', '%Y.%m']:
+            for format in ['%Y.%m.%d', '%Y:%m:%d', '%Y-%m-%d', '%Y:%m', '%Y.%m', '%Y-%m']:
                 try:
                     return datetime.datetime.strptime(line, format)
                 except Exception, e:
@@ -114,3 +118,7 @@ class Diary(object):
             elif not is_date:
                 text.append(line.rstrip())
             
+
+        #and last entry
+        if text:
+            yield Entry('\n'.join(text).strip('\n'), when=when)
