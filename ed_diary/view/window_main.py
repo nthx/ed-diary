@@ -38,34 +38,24 @@ class WindowMain(object):
 
         self.ui_entry_text = gtk.TextView()
         self.ui_entry_text.get_buffer().set_text(self.controller.current_entry.text)
+        #self.ui_entry_text = hildon.TextView()
+        #self.ui_entry_text.set_placeholder(self.controller.current_entry.text)
 
-        x = """
-        align = gtk.Alignment(0, 1, 0, 0)
-        vbox = gtk.VBox(False)
-        vbox.pack_start(self.ui_entry_date, False, False, 0)
-        vbox.pack_start(self.ui_entry_text, False, False, 0)
-        align.add(vbox)
-        window.add(align)
-        """
+        right_a = lambda: gtk.Alignment(0, 1, 0, 0)
+        left_a = lambda: gtk.Alignment(1, 0, 0, 0)
 
-        y="""
-        """
-        halign = gtk.Alignment(1, 0, 0, 0);
-        valign = gtk.Alignment(0, 1, 0, 0);
-        hbox = gtk.HBox(False);
-        vbox = gtk.VBox(False);
+        date_labels = right_a()
 
-
+        hbox = gtk.HBox(False, 5);
+        hbox.add(gtk.Label('Date: '))
         hbox.add(self.ui_entry_date)
-        vbox.add(self.ui_entry_text)
 
-        halign.add(hbox)
+        vbox = gtk.VBox(False);
+        vbox.pack_start(date_labels, expand=False, fill=False, padding=0)
+        vbox.pack_start(self.ui_entry_text, expand=True, fill=True, padding=0)
 
-        vbox.pack_start(valign, False, False, 0)
-        vbox.pack_start(halign, False, False, 0)
-        #vbox.add(halign)
+        date_labels.add(hbox)
         window.add(vbox)
-
 
 
 
@@ -91,6 +81,7 @@ class WindowMain(object):
 
     def _update_labels(self, entry):
         self.ui_entry_date.set_label(entry.when_for_ui())
+        #self.ui_entry_text.set_placeholder(entry.text)
         self.ui_entry_text.get_buffer().set_text(entry.text)
         self.window.set_title(entry.when_for_ui())
 
