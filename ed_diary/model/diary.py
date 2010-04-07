@@ -24,6 +24,11 @@ class Diary(object):
         self.entries = []
 
 
+    def last_entry(self):
+        if self.entries:
+            return self.entries[len(self.entries)-1]
+
+
     def import_me(self):
         log.debug('import_me')
         self.entries = []
