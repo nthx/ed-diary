@@ -1,0 +1,7 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=Every Day Diary
+Icon=/usr/share/icons/hicolor/48x48/hildon/filemanager_games_folder.png
+Exec=/home/nthx/projects/ed-diary/hildon/grun.sh
+Type=Application
