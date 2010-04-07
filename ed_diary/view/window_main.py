@@ -38,6 +38,7 @@ class WindowMain(object):
 
         self.ui_entry_text = gtk.TextView()
         self.ui_entry_text.get_buffer().set_text(self.controller.current_entry.text)
+        self.ui_entry_text.set_property('wrap-mode', gtk.WRAP_WORD_CHAR)
         #self.ui_entry_text = hildon.TextView()
         #self.ui_entry_text.set_placeholder(self.controller.current_entry.text)
 
