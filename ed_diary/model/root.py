@@ -10,13 +10,12 @@ class Root(object):
     """Just contains all objects (data) used by the app
     """
     def __init__(self):
-        self.diary = Diary().import_me()
+        self.diary = None
         self.current_entries = [] #filtered view to all_entries
 
 
     def build_data(self):
-        log.debug('building data..')
-
+        self.diary = Diary().import_me()
         self.current_entries = self.diary.entries[:]
 
 

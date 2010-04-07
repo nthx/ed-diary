@@ -5,7 +5,8 @@ import datetime
 import os
 
 
-DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+#DATE_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_FORMAT = '%Y, %h %d'
 
 
 
@@ -38,6 +39,10 @@ class Entry(object):
         #Tricky Python polymorphism
         fn = self.POLYMORPHIC_WHEN_FOR_UI[type(self.when)]
         return fn(self)()
+
+
+    def to_file(self):
+        return '%s\n%s\n' % (self.when_for_ui(), self.text)
 
 
     def __str__(self):
