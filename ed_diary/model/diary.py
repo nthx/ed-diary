@@ -29,6 +29,10 @@ class Diary(object):
             return self.entries[len(self.entries)-1]
 
 
+    def new_entry(self):
+        self.entries.append(Entry())
+
+
     def import_me(self):
         log.debug('import_me')
         self.entries = []

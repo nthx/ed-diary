@@ -40,12 +40,20 @@ class Controller(object):
 
 
     def load_next_entry(self):
+        log.debug('load_next_entry')
+        def valid_index(index):
+            return index < len(self.root.current_entries) - 1
+
+
         if not self.current_entry in self.root.current_entries:
             return
 
         index = self.root.current_entries.index(self.current_entry)
-        if index < len(self.root.current_entries) - 1:
+
+        if not valid_index(index):
+            if self.current_entry.is_not_empty():
+                self.root.new_entry()
+
+        if valid_index(index):
             self.store_current_entry(self.root.current_entries[index+1])
             self.view.window_main.show_entry()
-
-

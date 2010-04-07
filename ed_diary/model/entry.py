@@ -19,7 +19,7 @@ class Entry(object):
     POLYMORPHIC_WHEN_FOR_UI[type(datetime.datetime.utcnow())] = lambda self: self.when_for_ui_for_datetime
 
 
-    def __init__(self, text, when=datetime.datetime.utcnow()):
+    def __init__(self, text='', when=datetime.datetime.utcnow()):
         self.text = text
         self.when = when
 
@@ -39,6 +39,10 @@ class Entry(object):
         #Tricky Python polymorphism
         fn = self.POLYMORPHIC_WHEN_FOR_UI[type(self.when)]
         return fn(self)()
+
+    
+    def is_not_empty(self):
+        return self.text and len(self.text.strip()) >= 0
 
 
     def to_file(self):

@@ -19,3 +19,6 @@ class Root(object):
         self.current_entries = self.diary.entries[:]
 
 
+    def new_entry(self):
+        self.diary.new_entry()
+        self.current_entries = self.diary.entries[:]
