@@ -88,7 +88,7 @@ class Diary(object):
             return line
 
         def represents_date(line):
-            if line and line[0].isdigit() and len(line)>=1:
+            if line and line[0].isdigit() and len(line)>=4:
                 date = parse_date(line)
                 return True, date
             else:
@@ -97,11 +97,17 @@ class Diary(object):
 
         lines = file.read()
         lines = lines.split('\n')
+
         when = None
         text = []
+        last_line = None
 
         for line in lines:
             is_date, _ = represents_date(line)
+
+            if is_date and last_line:
+                is_date = False #dont treat as date, when no blank line above a date
+
             if is_date:
 
                 if text:
@@ -117,6 +123,7 @@ class Diary(object):
 
             elif not is_date:
                 text.append(line.rstrip())
+            last_line = line
             
 
         #and last entry

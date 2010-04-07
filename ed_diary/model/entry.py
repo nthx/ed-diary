@@ -53,6 +53,7 @@ class Entry(object):
 
     def is_not_empty(self):
         return self.text and len(self.text.strip()) >= 0
+    is_empty = not is_not_empty
 
 
     def to_file(self):
