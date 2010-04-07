@@ -31,6 +31,7 @@ class View(object):
 
     def start(self):
         log.debug('started')
+        self.window_main.reload()
         #self.window_main.text_entry.grab_focus()
         gtk.main()
         

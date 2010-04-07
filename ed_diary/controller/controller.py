@@ -12,7 +12,7 @@ class Controller(object):
         self.root = root
         self.view = None #view setup later
 
-        self.current_entry = None
+        self.current_entry = self.root.current_entries and self.root.current_entries[0] or None
 
 
     def store_current_entry(self, entry):

@@ -14,8 +14,8 @@ class WindowMain(object):
         self.view = view
         self.controller = controller
 
-        self.label_entry_date = None
-        self.label_entry_text = None
+        self.ui_entry_date = None
+        self.ui_entry_text = None
 
         self.window = self.build()
 
@@ -33,18 +33,40 @@ class WindowMain(object):
 
 
     def fill_main_area(self, window):
-        align = gtk.Alignment()
-        self.label_entry_date = gtk.Label("date...")
-        self.label_entry_text = gtk.Label("text...")
+        self.ui_entry_date = gtk.Label("date...")
+        self.ui_entry_date.set_alignment(0, 0)
 
-        self.label_entry_date.set_alignment(0, 0)
-        self.label_entry_text.set_alignment(0, 0)
+        self.ui_entry_text = gtk.TextView()
+        self.ui_entry_text.get_buffer().set_text(self.controller.current_entry.text)
 
-        vbox = gtk.VBox(False, 0)
-        vbox.pack_start(self.label_entry_date, False, False, 0)
-        vbox.pack_start(self.label_entry_text, False, True, 0)
+        x = """
+        align = gtk.Alignment(0, 1, 0, 0)
+        vbox = gtk.VBox(False)
+        vbox.pack_start(self.ui_entry_date, False, False, 0)
+        vbox.pack_start(self.ui_entry_text, False, False, 0)
         align.add(vbox)
         window.add(align)
+        """
+
+        y="""
+        """
+        halign = gtk.Alignment(1, 0, 0, 0);
+        valign = gtk.Alignment(0, 1, 0, 0);
+        hbox = gtk.HBox(False);
+        vbox = gtk.VBox(False);
+
+
+        hbox.add(self.ui_entry_date)
+        vbox.add(self.ui_entry_text)
+
+        halign.add(hbox)
+
+        vbox.pack_start(valign, False, False, 0)
+        vbox.pack_start(halign, False, False, 0)
+        #vbox.add(halign)
+        window.add(vbox)
+
+
 
 
     def create_navigation_toolbar(self):
@@ -68,18 +90,18 @@ class WindowMain(object):
 
 
     def _update_labels(self, entry):
-        self.label_entry_date.set_label(entry.when)
-        self.label_entry_text.set_label(entry.text)
-        self.window.set_title(entry.when)
+        self.ui_entry_date.set_label(entry.when_for_ui())
+        self.ui_entry_text.get_buffer().set_text(entry.text)
+        self.window.set_title(entry.when_for_ui())
 
 
     def show_entry(self):
         entry = self.controller.current_entry
-        log.debug(entry.as_text())
+        log.debug(entry)
 
         self._update_labels(entry)
 
 
     def reload(self):
-        pass
+        self.show_entry()
 
