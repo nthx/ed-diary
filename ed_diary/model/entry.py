@@ -16,10 +16,10 @@ class Entry(object):
 
     POLYMORPHIC_WHEN_FOR_UI = {}
     POLYMORPHIC_WHEN_FOR_UI[type('')] = lambda self: self.when_for_ui_for_str
-    POLYMORPHIC_WHEN_FOR_UI[type(datetime.datetime.utcnow())] = lambda self: self.when_for_ui_for_datetime
+    POLYMORPHIC_WHEN_FOR_UI[type(datetime.datetime.now())] = lambda self: self.when_for_ui_for_datetime
 
 
-    def __init__(self, text='', when=datetime.datetime.utcnow()):
+    def __init__(self, text='', when=datetime.datetime.now()):
         self.text = text
         self.when = when
 
@@ -45,15 +45,16 @@ class Entry(object):
 
     
     def update(self, text):
-        if text and text.strip(' \n') != self.text.strip(' \n'):
-            #log.debug('update: %s' % text)
-            self.text = text
-            return True
+        self.text = text
+        return True
 
 
     def is_not_empty(self):
         return self.text and len(self.text.strip()) >= 0
-    is_empty = not is_not_empty
+
+
+    def is_empty(self):
+        return not self.is_not_empty()
 
 
     def to_file(self):

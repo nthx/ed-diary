@@ -34,13 +34,18 @@ class Diary(object):
         self.entries.append(Entry())
 
 
+    def add_entry(self, entry):
+        if entry.is_not_empty():
+            self.entries.append(entry)
+
+
     def import_me(self):
         log.debug('import_me')
         self.entries = []
 
         file, first_time = self.get_file_from_disk()
         for entry in self.parse_file(file):
-            self.entries.append(entry)
+            self.add_entry(entry)
         file.close()
         log.debug('%s entries imported' % len(self.entries))
 
@@ -55,6 +60,8 @@ class Diary(object):
         file, _ = self.get_file_from_disk(filename=DIARY_FILE_TMP, mode='w')
 
         for entry in self.entries:
+            if entry.is_empty():
+                continue
             file.write(entry.to_file())
             file.write('\n\n')
         file.close()

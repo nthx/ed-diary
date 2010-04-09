@@ -39,7 +39,7 @@ class WindowMain(object):
         self.ui_entry_text = gtk.TextView()
         self.ui_entry_text.set_property('wrap-mode', gtk.WRAP_WORD_CHAR)
 
-        self.ui_entry_text.get_buffer().connect('changed', lambda text_buffer: self.controller.text_changed('changed', text_buffer))
+        #self.ui_entry_text.get_buffer().connect('changed', lambda text_buffer: self.controller.text_changed('changed', text_buffer))
         #self.ui_entry_text.get_buffer().connect('modified-changed', lambda text_buffer: self.controller.text_changed('modified-changed', text_buffer))
 
         #not working :(
@@ -86,8 +86,11 @@ class WindowMain(object):
 
     def _update_labels(self, entry):
         self.ui_entry_date.set_label(entry.when_for_ui())
-        buffer = self.ui_entry_text.get_buffer()
+        #buffer = self.ui_entry_text.get_buffer()
+        buffer = gtk.TextBuffer()
+        self.ui_entry_text.set_buffer(buffer)
         buffer.set_text(entry.text)
+        buffer.connect('changed', lambda b: self.controller.text_changed('changed', b))
 
         self.window.set_title(entry.when_for_ui())
 

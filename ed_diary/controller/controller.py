@@ -26,6 +26,7 @@ class Controller(object):
 
 
     def text_changed(self, signal_name, text_buffer):
+        #log.debug("text_changed")
         current_entry = self.current_entry
         text = text_buffer.get_property('text')
         updated = current_entry.update(text)
