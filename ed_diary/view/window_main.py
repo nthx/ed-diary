@@ -29,6 +29,7 @@ class WindowMain(object):
         self.fill_main_area(window)
 
         window.add_toolbar(self.create_navigation_toolbar())
+        window.set_app_menu(self.create_menu())
         return window
 
 
@@ -63,6 +64,14 @@ class WindowMain(object):
         window.add(vbox)
 
 
+    def create_menu(self):
+        menu = hildon.AppMenu()
+        button = hildon.GtkButton(gtk.HILDON_SIZE_AUTO)
+        button.set_label("About")
+        button.connect("clicked", self.controller.menu_about, None)
+        menu.append(button)
+        menu.show_all()
+        return menu
 
     def create_navigation_toolbar(self):
         toolbar = gtk.Toolbar()

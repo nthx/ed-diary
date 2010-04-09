@@ -77,3 +77,7 @@ class Controller(object):
             self.root.diary.save_me()
 
 
+    def menu_about(self, button, param):
+        log.debug("menu_about")
+        
+

@@ -1,7 +1,3 @@
-* for new entry dont use UTC time
-* when importing ignore empty entries
-* use Buffer switch for switching entries' text
-
 
 * add about info
 * allow to delete entry
