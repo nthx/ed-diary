@@ -36,6 +36,7 @@ class WindowAbout(object):
         log.debug('building main..')
 
         window = hildon.StackableWindow()
+        window.set_title('About Ed Diary')
         pannable_area = hildon.PannableArea()
         #about = gtk.TextView()
         #about.get_buffer().set_text(ABOUT)
