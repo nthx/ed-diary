@@ -1,7 +1,6 @@
 import logging, sys
 log = logging.getLogger(__name__)
 
-
 import gtk
 import hildon
 
@@ -78,6 +77,7 @@ class Controller(object):
 
 
     def menu_about(self, button, param):
+        self.view.window_about.build_and_show()
         log.debug("menu_about")
         
 

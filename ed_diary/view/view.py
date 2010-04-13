@@ -5,6 +5,7 @@ import gtk
 import hildon
 
 
+from ed_diary.view.window_about import WindowAbout
 from ed_diary.view.window_main import WindowMain
 
 
@@ -16,6 +17,7 @@ class View(object):
         self.controller = controller
 
         self.window_main = WindowMain(root, self, controller)
+        self.window_about = WindowAbout()
 
         program = hildon.Program.get_instance()
 
