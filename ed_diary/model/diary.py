@@ -12,6 +12,9 @@ CONFIG_DIR=os.path.join(HOME, '.eddiary')
 DIARY_FILE=os.path.join(CONFIG_DIR, 'diary.txt')
 DIARY_FILE_TMP=os.path.join(CONFIG_DIR, 'diary-save.txt')
 
+DIARY_FILE_FOR_IPAD=os.path.join(CONFIG_DIR, 'diary-ipad.txt')
+DIARY_FILE_TMP_FOR_IPAD=os.path.join(CONFIG_DIR, 'diary-save-ipad.txt')
+
 WELCOME="""
 Hello to "Every Day Diary". An utility for you to store a not each day.
 
@@ -58,14 +61,20 @@ class Diary(object):
     def save_me(self):
         log.debug('saving..')
         file, _ = self.get_file_from_disk(filename=DIARY_FILE_TMP, mode='w')
+        file_ipad, _ = self.get_file_from_disk(filename=DIARY_FILE_TMP_FOR_IPAD, mode='w')
 
         for entry in self.entries:
             if entry.is_empty():
                 continue
             file.write(entry.to_file())
             file.write('\n\n')
+
+            file_ipad.write(entry.to_file_for_ipad())
+
+
         file.close()
         shutil.move(DIARY_FILE_TMP, DIARY_FILE)
+        shutil.move(DIARY_FILE_TMP_FOR_IPAD, DIARY_FILE_FOR_IPAD)
         log.debug('saved..')
         
         

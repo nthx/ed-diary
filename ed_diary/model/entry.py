@@ -61,6 +61,12 @@ class Entry(object):
         return '%s\n%s\n' % (self.when_for_ui(for_file=True), self.text)
 
 
+    def to_file_for_ipad(self):
+        return """
+        """
+        return '%s\n%s\n' % (self.when_for_ui(for_file=True), self.text)
+
+
     def __str__(self):
         return '%s: %s' % (self.when, self.text)
 
