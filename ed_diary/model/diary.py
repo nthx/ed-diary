@@ -2,6 +2,7 @@ import logging
 log = logging.getLogger(__name__)
 
 from ed_diary.model.entry import Entry
+import ed_diary.lib.simplejson as sjson
 import datetime
 import os
 import shutil
@@ -62,14 +63,16 @@ class Diary(object):
         log.debug('saving..')
         file, _ = self.get_file_from_disk(filename=DIARY_FILE_TMP, mode='w')
         file_ipad, _ = self.get_file_from_disk(filename=DIARY_FILE_TMP_FOR_IPAD, mode='w')
+        json_diary = []
 
         for entry in self.entries:
             if entry.is_empty():
                 continue
             file.write(entry.to_file())
             file.write('\n\n')
+            json_diary.append(entry.as_json())
 
-            file_ipad.write(entry.to_file_for_ipad())
+        file_ipad.write(sjson.dumps(json_diary, ensure_ascii = False, indent=4, sort_keys=True))
 
 
         file.close()

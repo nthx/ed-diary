@@ -38,8 +38,7 @@ class WindowAbout(object):
         window = hildon.StackableWindow()
         window.set_title('About Ed Diary')
         pannable_area = hildon.PannableArea()
-        #about = gtk.TextView()
-        #about.get_buffer().set_text(ABOUT)
+
         about = gtk.Label(ABOUT)
         pannable_area.add_with_viewport(about)
 

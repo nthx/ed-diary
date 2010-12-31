@@ -23,7 +23,5 @@ rotation_object = FremantleRotation('EdDiary',
                                     version='1.0', 
                                     mode=FremantleRotation.AUTOMATIC)
 
+#root.diary.save_me()
 view.start()
-
-
-

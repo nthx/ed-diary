@@ -3,6 +3,7 @@ log = logging.getLogger(__name__)
 
 import datetime
 import os
+import traceback
 
 
 FILE_DATE_FORMAT = '%Y-%m-%d'
@@ -61,10 +62,29 @@ class Entry(object):
         return '%s\n%s\n' % (self.when_for_ui(for_file=True), self.text)
 
 
-    def to_file_for_ipad(self):
-        return """
-        """
-        return '%s\n%s\n' % (self.when_for_ui(for_file=True), self.text)
+    def as_json(self):
+        DAY=60*60*24
+        xDAY_2008_02_27 = 225813388
+
+        day_0 = datetime.datetime(2008, 2, 27)
+        d = self.when_for_ui_for_str()
+        d = d[:10].replace('.', '-').replace('xx', '01')
+        try:
+            day_current_entry = datetime.datetime.strptime(d, '%Y-%m-%d')
+        except Exception, e:
+            log.debug(d)
+            log.debug(traceback.format_exc())
+            raise
+        days = (day_current_entry - day_0).days
+        log.debug('%s, %s -> %s', day_current_entry, days, xDAY_2008_02_27 + days*DAY)
+
+        json = {
+            'updateDate': 0,
+            'text': self.text,
+            'photos': [],
+            'date': xDAY_2008_02_27 + days*DAY
+        }
+        return json
 
 
     def __str__(self):
